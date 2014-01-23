@@ -44,8 +44,10 @@ endif()
 
 # --------------------------
 
+set(CMAKECONFIG_INSTALL_DIR ${LIB_INSTALL_DIR}/cmake/Kubuntu)
+
 configure_package_config_file(KubuntuConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/KubuntuConfig.cmake
-    INSTALL_DESTINATION ${LIB_INSTALL_DIR}/cmake/Kubuntu
+    INSTALL_DESTINATION ${CMAKECONFIG_INSTALL_DIR}
     PATH_VARS INCLUDE_INSTALL_DIR
 )
 
@@ -54,8 +56,15 @@ write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/KubuntuConfigVersio
     COMPATIBILITY SameMajorVersion
 )
 
+install(EXPORT LibKubuntuTargets
+    DESTINATION ${CMAKECONFIG_INSTALL_DIR}
+    NAMESPACE Kubuntu::
+    FILE KubuntuTargets.cmake
+)
+
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/KubuntuConfig.cmake
+#    ${CMAKE_CURRENT_BINARY_DIR}/KubuntuTargets.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/KubuntuConfigVersion.cmake
-    DESTINATION ${LIB_INSTALL_DIR}/cmake/Kubuntu
+    DESTINATION ${CMAKECONFIG_INSTALL_DIR}
 )

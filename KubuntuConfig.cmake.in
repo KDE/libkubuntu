@@ -7,3 +7,9 @@ set(KUBUNTU_VERSION_PATCH @KUBUNTU_VERSION_PATCH@)
 set(KUBUNTU_VERSION @KUBUNTU_VERSION@)
 
 set(KUBUNTU_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@/Kubuntu")
+
+if(NOT TARGET Phonon::Kubuntu)
+    include(${CMAKE_CURRENT_LIST_DIR}/KubuntuTargets.cmake)
+endif()
+
+set(KUBUNTU_LIBRARY Kubuntu::Kubuntu)
