@@ -40,11 +40,29 @@ void LocalePrivate::init(LanguagePtrList _languages, QString _country)
 {
     languages = _languages;
     country = _country;
-    const QString mainLanguage = _languages.at(0)->languageCode();
+
+    // Parse additional stuff out of the main language's kde code.
+    QString mainLanguage = _languages.at(0)->languageCode();
     qDebug() << mainLanguage;
+    // Get variant.
     if (mainLanguage.contains(QChar('@'))) {
         QStringList components = mainLanguage.split(QChar('@'));
-        variant = components.last();
+        if (!components.isEmpty()) {
+            variant = components.takeLast();
+            mainLanguage = components.join(QChar('@'));
+        }
+    }
+    // Get possibly implicit country to override manually defined one.
+    // For example zh_CN must be zh_CN because that is a different language from
+    // zh_TW.
+    // en_US is exepcted from this rule as 'en' is the uniform base language
+    // and makes sense for everything.
+    if (mainLanguage.contains(QChar('_')) && !mainLanguage.startsWith(QLatin1String("en_US"))) {
+        QStringList components = mainLanguage.split(QChar('_'));
+        if (!components.isEmpty()) {
+            country = components.takeLast();
+            mainLanguage = components.join(QChar('_'));
+        }
     }
 }
 
