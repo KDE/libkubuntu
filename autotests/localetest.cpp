@@ -1,8 +1,8 @@
 #include <QtTest>
 #include <QtCore>
 
-#include "../src/language.h"
-#include "../src/locale.h"
+#include "../src/l10n_language.h"
+#include "../src/l10n_locale.h"
 
 class localeTest : public QObject
 {

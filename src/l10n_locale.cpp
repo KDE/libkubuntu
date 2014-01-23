@@ -1,6 +1,6 @@
-#include "locale.h"
+#include "l10n_locale.h"
 
-#include "language.h"
+#include "l10n_language.h"
 
 #include <KConfigGroup>
 #include <KSharedConfig>

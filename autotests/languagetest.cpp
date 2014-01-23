@@ -1,7 +1,7 @@
 #include <QtTest>
 #include <QtCore>
 
-#include "../src/language.h"
+#include "../src/l10n_language.h"
 
 class languageTest : public QObject
 {

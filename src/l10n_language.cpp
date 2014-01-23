@@ -1,4 +1,4 @@
-#include "language.h"
+#include "l10n_language.h"
 
 #include <KConfigGroup>
 #include <KGlobal>
@@ -239,4 +239,4 @@ void Language::completeSupport()
 
 } // namespace Kubuntu
 
-#include "language.moc"
+#include "l10n_language.moc"

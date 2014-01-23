@@ -31,7 +31,7 @@ public:
     void completeSupport();
 
 signals:
-    /** Emitted once completeSupport() has finished */
+    /** Emitted once completeSupport has finished. \see completeSupport */
     void supportComplete();
 
     /**
