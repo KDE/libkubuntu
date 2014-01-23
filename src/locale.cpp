@@ -44,7 +44,7 @@ void LocalePrivate::init(LanguagePtrList _languages, QString _country)
     qDebug() << mainLanguage;
     if (mainLanguage.contains(QChar('@'))) {
         QStringList components = mainLanguage.split(QChar('@'));
-        variant = components.at(1);
+        variant = components.last();
     }
 }
 
