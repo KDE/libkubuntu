@@ -101,6 +101,7 @@ QList<QString> Locale::systemLanguages() const
         if (list.isEmpty() || list.last() != language->systemLanguageCode())
             list.append(language->systemLanguageCode());
     }
+    // Must always end with en.
     if (list.isEmpty() || list.last() != QLatin1String("en"))
         list.append("en");
     return list;
