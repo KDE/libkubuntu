@@ -61,10 +61,7 @@ public:
     void transactionCleanup();
 
     /** Slot handling QApt transactions ending. */
-    void transactionFinished();
-
-    /** Slot handling QApt transaction errors. */
-    void transactionError();
+    void transactionFinished(int exitStatus);
 
     /**
      * Checks if a package by the name of pkgName exists and if it is not
@@ -133,20 +130,25 @@ void LanguagePrivate::transactionCleanup()
     transaction = nullptr;
 }
 
-void LanguagePrivate::transactionFinished()
+void LanguagePrivate::transactionFinished(int exitStatus)
 {
     Q_Q(Language);
     if (!transaction)
         return;
-    transactionCleanup();
-    emit q->supportComplete();
-}
 
-void LanguagePrivate::transactionError()
-{
-    if (!transaction)
-        return;
-    transactionFinished();
+    transactionCleanup();
+
+    switch (static_cast<QApt::ExitStatus>(exitStatus)) {
+    case QApt::ExitSuccess:
+        emit q->supportComplete();
+        break;
+    case QApt::ExitCancelled:
+    case QApt::ExitFailed:
+    case QApt::ExitPreviousFailed:
+    case QApt::ExitUnfinished:
+        emit q->supportCompletionFailed();
+        break;
+    }
 }
 
 void LanguagePrivate::possiblyAddMissingPackage(const QString &pkgName)
@@ -271,9 +273,7 @@ void Language::completeSupport()
     connect(d->transaction, SIGNAL(progressChanged(int)),
             this, SIGNAL(supportCompletionProgress(int)));
     connect(d->transaction, SIGNAL(finished(QApt::ExitStatus)),
-            this, SLOT(transactionFinished()));
-    connect(d->transaction, SIGNAL(errorOccurred(QApt::ErrorCode)),
-            this, SLOT(transactionError()));
+            this, SLOT(transactionFinished(int)));
     qDebug() << "start";
     d->transaction->run();
 }

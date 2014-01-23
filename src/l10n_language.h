@@ -40,6 +40,9 @@ signals:
     /** Emitted once completeSupport has finished. \see completeSupport */
     void supportComplete();
 
+    /** Emitted if an error is encounted during support completion \see completeSupport */
+    void supportCompletionFailed();
+
     /**
      * Emitted during support completion.
      *
@@ -51,8 +54,7 @@ private:
     const QScopedPointer<LanguagePrivate> d_ptr;
 
     Q_DECLARE_PRIVATE(Language)
-    Q_PRIVATE_SLOT(d_func(),void transactionFinished())
-    Q_PRIVATE_SLOT(d_func(),void transactionError())
+    Q_PRIVATE_SLOT(d_func(),void transactionFinished(int))
 };
 
 } // namespace Kubuntu
