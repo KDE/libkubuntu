@@ -15,10 +15,41 @@
 
 namespace Kubuntu {
 
-static QString mapKdeLanguageToUbuntuLanguage(const QString &kdeLanguage)
+#warning global static in library...
+static const char *s_languageCodeMap[][3] = {
+    // kdepkgcode       kdecode         ubuntupkgcode
+    { "engb",           "en_GB",        "en"            },
+    { "ca-valencia",    "ca@valencia",  "ca"            },
+    { "ptbr",           "pt_BR",        "pt"            },
+    { "zhcn",           "zh_CN",        "zh-hans"       },
+    { "zhtw",           "zh_TW",        "zh-hant"       },
+    { 0 }
+};
+
+QString Language::ubuntuPackgeForKdeCode(const QString &kdeCode)
 {
-#warning todo
-    return QString();
+    QString ubuntuPkg = kdeCode;
+    for (int i = 0; s_languageCodeMap[i][0]; ++i) {
+        if (kdeCode == QLatin1String(s_languageCodeMap[i][1])) {
+            QString kdePackageCode = QLatin1String(s_languageCodeMap[i][0]);
+            if (s_languageCodeMap[i][2] && (s_languageCodeMap[i][2] != kdePackageCode))
+                ubuntuPkg = QLatin1String(s_languageCodeMap[i][2]);
+            break;
+        }
+    }
+    return ubuntuPkg;
+}
+
+QString Language::kdeCodeForKdePackage(const QString &kdePkg)
+{
+    QString kdeCode = kdePkg;
+    for (int i = 0; s_languageCodeMap[i][0]; ++i) {
+        if (kdePkg == QLatin1String(s_languageCodeMap[i][0])) {
+            kdeCode = QLatin1String(s_languageCodeMap[i][1]);
+            break;
+        }
+    }
+    return kdeCode;
 }
 
 class LanguagePrivate
@@ -36,13 +67,23 @@ public:
     void transactionError();
 
     /**
+     * Checks if a package by the name of pkgName exists and if it is not
+     * installed and not already in the missingPackages set it will be added.
+     *
+     * \param pkgName the name of the package to possibly append
+     * \see possiblyAddMissingPrefixPackage
+     */
+    void possiblyAddMissingPackage(const QString &pkgName);
+
+    /**
      * Checks if prefix + kdeLanguage and prefix + ubuntuLanguage are packages
      * and whether they are installed. If they are packages and not installed
      * they will be added to missingPackages.
      *
      * \param prefix package prefix, language values are appended to form a package name
+     * \see possiblyAddMissingPackage
      */
-    void checkPrefixInstalled(const QString &prefix);
+    void possiblyAddMissingPrefixPackage(const QString &prefix);
 
     Language *const q_ptr;
     Q_DECLARE_PUBLIC(Language)
@@ -52,7 +93,7 @@ public:
     QString ubuntuLanguage;
 
     QScopedPointer<QApt::Backend> backend;
-    QList<QApt::Package *> missingPackages;
+    QSet<QApt::Package *> missingPackages;
     QApt::Transaction *transaction;
 
 private:
@@ -63,7 +104,7 @@ private:
 LanguagePrivate::LanguagePrivate(Language *q, const QString language)
     : q_ptr(q)
     , kdeLanguage(language)
-    , ubuntuLanguage(mapKdeLanguageToUbuntuLanguage(kdeLanguage))
+    , ubuntuLanguage(q->ubuntuPackgeForKdeCode(kdeLanguage))
     , backend(new QApt::Backend)
     , transaction(nullptr)
 {
@@ -75,7 +116,7 @@ LanguagePrivate::LanguagePrivate(Language *q, const QString language)
         if (kdeLanguage.contains(QChar(':')))
             kdeLanguage = kdeLanguage.split(QChar(':')).at(0);
 
-        ubuntuLanguage = mapKdeLanguageToUbuntuLanguage(kdeLanguage);
+        ubuntuLanguage = q->ubuntuPackgeForKdeCode(kdeLanguage);
     }
 
     qDebug() << kdeLanguage << ubuntuLanguage;
@@ -108,16 +149,18 @@ void LanguagePrivate::transactionError()
     transactionFinished();
 }
 
-void LanguagePrivate::checkPrefixInstalled(const QString &prefix)
+void LanguagePrivate::possiblyAddMissingPackage(const QString &pkgName)
 {
-    QApt::Package *package = backend->package(prefix % kdeLanguage);
-    if (package && !package->isInstalled())
-        missingPackages.append(package);
-    if (!ubuntuLanguage.isEmpty()) {
-        package = backend->package(prefix % ubuntuLanguage);
-        if (package && !package->isInstalled())
-            missingPackages.append(package);
-    }
+    QApt::Package *package = 0;
+    package = backend->package(pkgName);
+    if (package && !package->isInstalled() && missingPackages.contains(package))
+        missingPackages.insert(package);
+}
+
+void LanguagePrivate::possiblyAddMissingPrefixPackage(const QString &prefix)
+{
+    possiblyAddMissingPackage(prefix % kdeLanguage);
+    possiblyAddMissingPackage(prefix % ubuntuLanguage);
 }
 
 Language::Language(QObject *parent)
@@ -183,7 +226,7 @@ bool Language::isSupportComplete()
                 QString prefix = pkgDepends.at(3);
                 prefix.chop(1);
 
-                d->checkPrefixInstalled(prefix);
+                d->possiblyAddMissingPrefixPackage(prefix);
             } else {
                 //if it is only if another package is installed check that
                 QApt::Package *dependency = d->backend->package(pkgDepends.at(2));
@@ -194,11 +237,9 @@ bool Language::isSupportComplete()
                     // There are per-language packages such as kde-l10n-xx and meta ones such as chromium-l10n.
                     // Former needs concat whereas latter needs as-is usage
                     if (prefix.right(1) == QChar('-')) { // Per-language
-                        d->checkPrefixInstalled(prefix);
+                        d->possiblyAddMissingPrefixPackage(prefix);
                     } else { // Meta
-                        QApt::Package *package = d->backend->package(prefix);
-                        if (package && !package->isInstalled())
-                            d->missingPackages.append(package);
+                        d->possiblyAddMissingPackage(prefix);
                     }
                 }
             }
@@ -218,7 +259,7 @@ void Language::completeSupport()
 
     foreach (QApt::Package *p, d->missingPackages)
         qDebug() << "installing" << p->name();
-    d->backend->markPackages(d->missingPackages, QApt::Package::ToInstall);
+    d->backend->markPackages(d->missingPackages.toList(), QApt::Package::ToInstall);
     d->transaction = d->backend->commitChanges();
 
     // Provide proxy/locale to the transaction

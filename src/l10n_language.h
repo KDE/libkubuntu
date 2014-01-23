@@ -30,6 +30,12 @@ public:
     /** Installs all missing packages for languages; async \see supportComplete */
     void completeSupport();
 
+    /** \returns the Ubuntu package code (zh-hant) for a KDE l10n code (zh_TW) */
+    static QString ubuntuPackgeForKdeCode(const QString &kdeCode);
+
+    /** \returns the KDE l10n code (zh_TW) for a KDE package code (zhtw) */
+    static QString kdeCodeForKdePackage(const QString &kdePkg);
+
 signals:
     /** Emitted once completeSupport has finished. \see completeSupport */
     void supportComplete();
