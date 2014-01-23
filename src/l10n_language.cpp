@@ -124,10 +124,10 @@ LanguagePrivate::LanguagePrivate(Language *q, const QString language)
 
 void LanguagePrivate::transactionCleanup()
 {
+    transaction = nullptr;
     // Reload cache to reset pending changes, this way error'd installs will not
     // keep repeating for any subsequent attempts.
     backend->reloadCache();
-    transaction = nullptr;
 }
 
 void LanguagePrivate::transactionFinished(int exitStatus)
