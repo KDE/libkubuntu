@@ -60,8 +60,11 @@ public:
     /** Helper to clean up after a transaction ended. */
     void transactionCleanup();
 
+    /** Slot handling QApt transaction errors. */
+    void transactionError();
+
     /** Slot handling QApt transactions ending. */
-    void transactionFinished(int exitStatus);
+    void transactionFinished(QApt::ExitStatus exitStatus);
 
     /**
      * Checks if a package by the name of pkgName exists and if it is not
@@ -130,7 +133,7 @@ void LanguagePrivate::transactionCleanup()
     backend->reloadCache();
 }
 
-void LanguagePrivate::transactionFinished(int exitStatus)
+void LanguagePrivate::transactionError()
 {
     Q_Q(Language);
     if (!transaction)
@@ -138,7 +141,21 @@ void LanguagePrivate::transactionFinished(int exitStatus)
 
     transactionCleanup();
 
-    switch (static_cast<QApt::ExitStatus>(exitStatus)) {
+    qDebug() << Q_FUNC_INFO;
+    emit q->supportCompletionFailed();
+}
+
+void LanguagePrivate::transactionFinished(QApt::ExitStatus exitStatus)
+{
+    Q_Q(Language);
+    if (!transaction)
+        return;
+
+    transactionCleanup();
+
+    qDebug() << Q_FUNC_INFO << exitStatus;
+
+    switch (exitStatus) {
     case QApt::ExitSuccess:
         emit q->supportComplete();
         break;
@@ -273,7 +290,9 @@ void Language::completeSupport()
     connect(d->transaction, SIGNAL(progressChanged(int)),
             this, SIGNAL(supportCompletionProgress(int)));
     connect(d->transaction, SIGNAL(finished(QApt::ExitStatus)),
-            this, SLOT(transactionFinished(int)));
+            this, SLOT(transactionFinished(QApt::ExitStatus)));
+    connect(d->transaction, SIGNAL(errorOccurred(QApt::ErrorCode)),
+            this, SLOT(transactionError()));
     qDebug() << "start";
     d->transaction->run();
 }

@@ -54,7 +54,8 @@ private:
     const QScopedPointer<LanguagePrivate> d_ptr;
 
     Q_DECLARE_PRIVATE(Language)
-    Q_PRIVATE_SLOT(d_func(),void transactionFinished(int))
+    Q_PRIVATE_SLOT(d_func(),void transactionFinished(QApt::ExitStatus))
+    Q_PRIVATE_SLOT(d_func(),void transactionError())
 };
 
 } // namespace Kubuntu
