@@ -155,7 +155,7 @@ void LanguagePrivate::possiblyAddMissingPackage(const QString &pkgName)
 {
     QApt::Package *package = 0;
     package = backend->package(pkgName);
-    if (package && !package->isInstalled() && missingPackages.contains(package))
+    if (package && !package->isInstalled() && !missingPackages.contains(package))
         missingPackages.insert(package);
 }
 
