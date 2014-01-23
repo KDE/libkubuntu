@@ -42,4 +42,6 @@ target_link_libraries(demo
     Kubuntu
 )
 
-add_subdirectory(autotests)
+if(KDE4_BUILD_TESTS)
+    add_subdirectory(autotests)
+endif()
