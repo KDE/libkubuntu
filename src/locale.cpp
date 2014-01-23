@@ -15,6 +15,7 @@ class LocalePrivate
 {
 public:
     LocalePrivate();
+    ~LocalePrivate();
 
     void init(LanguagePtrList _languages, QString _country);
 
@@ -28,6 +29,11 @@ public:
 LocalePrivate::LocalePrivate()
     : encoding(QLatin1String("UTF-8"))
 {
+}
+
+LocalePrivate::~LocalePrivate()
+{
+    qDeleteAll(languages);
 }
 
 void LocalePrivate::init(LanguagePtrList _languages, QString _country)
