@@ -70,6 +70,13 @@ Locale::Locale()
     d->init(languages, country);
 }
 
+Locale::Locale(const QList<Language *> &languages, const QString &country)
+    : d_ptr(new LocalePrivate)
+{
+    Q_D(Locale);
+    d->init(languages, country);
+}
+
 Locale::~Locale()
 {
 }

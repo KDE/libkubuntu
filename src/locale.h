@@ -19,6 +19,20 @@ public:
      * localization configuration.
      */
     Locale();
+
+    /**
+     * Constructs a Locale from a predefined set of languages and a country.
+     *
+     * \warning Owernship of the Language instances moves to the Locale, once
+     *          the constructor returns you should throw away your references as
+     *          to avoid parenting/scope problems.
+     *
+     * \param languages list of valid Language instances.
+     * \param country the country for this locale.
+     */
+    Locale(const QList<Language *> &languages, const QString &country);
+
+    /** Destructor. */
     ~Locale();
 
     /** \returns the system locale string (e.g. ca_ES.UTF-8@valencia) */
