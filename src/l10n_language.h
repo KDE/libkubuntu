@@ -31,7 +31,7 @@ public:
     void completeSupport();
 
     /** \returns the Ubuntu package code (zh-hant) for a KDE l10n code (zh_TW) */
-    static QString ubuntuPackgeForKdeCode(const QString &kdeCode);
+    static QString ubuntuPackageForKdeCode(const QString &kdeCode);
 
     /** \returns the KDE l10n code (zh_TW) for a KDE package code (zhtw) */
     static QString kdeCodeForKdePackage(const QString &kdePkg);

@@ -1,5 +1,6 @@
 
 set(kubuntu_SRCS
+    busyoverlay.cpp
     l10n_language.cpp
     l10n_locale.cpp
 
@@ -7,6 +8,7 @@ set(kubuntu_SRCS
     export.h
 )
 
+kde4_add_ui_files(kubuntu_SRCS busyoverlay.ui)
 kde4_add_library(Kubuntu SHARED ${kubuntu_SRCS})
 
 set_target_properties(Kubuntu
@@ -22,6 +24,7 @@ target_link_libraries(Kubuntu
 install(TARGETS Kubuntu EXPORT LibKubuntuTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES
+    busyoverlay.h
     export.h
     l10n_language.h
     l10n_locale.h

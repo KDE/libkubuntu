@@ -26,7 +26,7 @@ static const char *s_languageCodeMap[][3] = {
     { 0 }
 };
 
-QString Language::ubuntuPackgeForKdeCode(const QString &kdeCode)
+QString Language::ubuntuPackageForKdeCode(const QString &kdeCode)
 {
     QString ubuntuPkg = kdeCode;
     for (int i = 0; s_languageCodeMap[i][0]; ++i) {
@@ -89,7 +89,6 @@ public:
     Q_DECLARE_PUBLIC(Language)
 
     QString kdeLanguage;
-
     QString ubuntuLanguage;
 
     QScopedPointer<QApt::Backend> backend;
@@ -97,14 +96,14 @@ public:
     QApt::Transaction *transaction;
 
 private:
-    LanguagePrivate() : q_ptr(nullptr) {}
+    LanguagePrivate() : q_ptr(nullptr) { Q_ASSERT(q_ptr); }
     Q_DISABLE_COPY(LanguagePrivate)
 };
 
 LanguagePrivate::LanguagePrivate(Language *q, const QString language)
     : q_ptr(q)
     , kdeLanguage(language)
-    , ubuntuLanguage(q->ubuntuPackgeForKdeCode(kdeLanguage))
+    , ubuntuLanguage(q->ubuntuPackageForKdeCode(kdeLanguage))
     , backend(new QApt::Backend)
     , transaction(nullptr)
 {
@@ -116,7 +115,7 @@ LanguagePrivate::LanguagePrivate(Language *q, const QString language)
         if (kdeLanguage.contains(QChar(':')))
             kdeLanguage = kdeLanguage.split(QChar(':')).at(0);
 
-        ubuntuLanguage = q->ubuntuPackgeForKdeCode(kdeLanguage);
+        ubuntuLanguage = q->ubuntuPackageForKdeCode(kdeLanguage);
     }
 
     qDebug() << kdeLanguage << ubuntuLanguage;
@@ -170,6 +169,7 @@ void LanguagePrivate::transactionFinished(QApt::ExitStatus exitStatus)
 
 void LanguagePrivate::possiblyAddMissingPackage(const QString &pkgName)
 {
+//    qDebug() << Q_FUNC_INFO << pkgName;
     QApt::Package *package = 0;
     package = backend->package(pkgName);
     if (package && !package->isInstalled() && !missingPackages.contains(package))
@@ -178,6 +178,7 @@ void LanguagePrivate::possiblyAddMissingPackage(const QString &pkgName)
 
 void LanguagePrivate::possiblyAddMissingPrefixPackage(const QString &prefix)
 {
+//    qDebug() << Q_FUNC_INFO << prefix;
     possiblyAddMissingPackage(prefix % kdeLanguage);
     possiblyAddMissingPackage(prefix % ubuntuLanguage);
 }
