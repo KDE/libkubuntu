@@ -2,10 +2,12 @@
 set(kubuntu_SRCS
     busyoverlay.cpp
     l10n_language.cpp
+    l10n_languagecollection.cpp
     l10n_locale.cpp
 
 # QTC compat
     export.h
+    l10n_languagecollection_p.h
 )
 
 kde4_add_ui_files(kubuntu_SRCS busyoverlay.ui)
@@ -27,6 +29,7 @@ install(FILES
     busyoverlay.h
     export.h
     l10n_language.h
+    l10n_languagecollection.h
     l10n_locale.h
     DESTINATION ${INCLUDE_INSTALL_DIR}/Kubuntu COMPONENT Devel
 )

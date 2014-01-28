@@ -13,6 +13,9 @@
 #include <QStringBuilder>
 #include <QStringList>
 
+#include "l10n_languagecollection.h"
+#include "l10n_languagecollection_p.h"
+
 namespace Kubuntu {
 
 #warning global static in library...
@@ -26,7 +29,7 @@ static const char *s_languageCodeMap[][3] = {
     { 0 }
 };
 
-QString Language::ubuntuPackageForKdeCode(const QString &kdeCode)
+QString Language::ubuntuPackageCodeForKdeCode(const QString &kdeCode)
 {
     QString ubuntuPkg = kdeCode;
     for (int i = 0; s_languageCodeMap[i][0]; ++i) {
@@ -40,7 +43,7 @@ QString Language::ubuntuPackageForKdeCode(const QString &kdeCode)
     return ubuntuPkg;
 }
 
-QString Language::kdeCodeForKdePackage(const QString &kdePkg)
+QString Language::kdeCodeForKdePackageCode(const QString &kdePkg)
 {
     QString kdeCode = kdePkg;
     for (int i = 0; s_languageCodeMap[i][0]; ++i) {
@@ -52,10 +55,25 @@ QString Language::kdeCodeForKdePackage(const QString &kdePkg)
     return kdeCode;
 }
 
+QString Language::kdePackageCodeForKdeCode(const QString &kdeCode)
+{
+    QString kdePkg = kdeCode;
+    for (int i = 0; s_languageCodeMap[i][0]; ++i) {
+        if (kdeCode == QLatin1String(s_languageCodeMap[i][1])) {
+            kdePkg = QLatin1String(s_languageCodeMap[i][0]);
+            break;
+        }
+    }
+    return kdePkg;
+}
+
 class LanguagePrivate
 {
 public:
-    LanguagePrivate(Language *q, const QString language = QString());
+    LanguagePrivate(Language *q,
+                    const QString language = QString(),
+                    LanguageCollection *collection = 0);
+    ~LanguagePrivate();
 
     /** Helper to clean up after a transaction ended. */
     void transactionCleanup();
@@ -91,7 +109,8 @@ public:
     QString kdeLanguage;
     QString ubuntuLanguage;
 
-    QScopedPointer<QApt::Backend> backend;
+    LanguageCollection *collection;
+    QApt::Backend *backend;
     QSet<QApt::Package *> missingPackages;
     QApt::Transaction *transaction;
 
@@ -100,13 +119,27 @@ private:
     Q_DISABLE_COPY(LanguagePrivate)
 };
 
-LanguagePrivate::LanguagePrivate(Language *q, const QString language)
+LanguagePrivate::LanguagePrivate(Language *q,
+                                 const QString language,
+                                 LanguageCollection *collection)
     : q_ptr(q)
     , kdeLanguage(language)
-    , ubuntuLanguage(q->ubuntuPackageForKdeCode(kdeLanguage))
-    , backend(new QApt::Backend)
+    , ubuntuLanguage(q->ubuntuPackageCodeForKdeCode(kdeLanguage))
+    , collection(collection)
+    , backend()
     , transaction(nullptr)
 {
+    // Init backend.
+    if (!collection) {
+        backend = new QApt::Backend;
+        backend->init();
+    } else {
+        // Collection is our parent, so it's no problem that we hold a ptr here.
+        backend = &collection->d_ptr->backend;
+        // Backend assumed to be initalized by the user of the collection.
+    }
+
+    // Init languages.
     if (kdeLanguage.isEmpty()) {
         KSharedConfigPtr config = KSharedConfig::openConfig("kdeglobals", KConfig::CascadeConfig);
         KConfigGroup settings = KConfigGroup(config, "Locale");
@@ -115,13 +148,16 @@ LanguagePrivate::LanguagePrivate(Language *q, const QString language)
         if (kdeLanguage.contains(QChar(':')))
             kdeLanguage = kdeLanguage.split(QChar(':')).at(0);
 
-        ubuntuLanguage = q->ubuntuPackageForKdeCode(kdeLanguage);
+        ubuntuLanguage = q->ubuntuPackageCodeForKdeCode(kdeLanguage);
     }
 
-    qDebug() << kdeLanguage << ubuntuLanguage;
+//    qDebug() << kdeLanguage << ubuntuLanguage;
+}
 
-#warning backend not reloading, backend not opening xapian etc.etc.
-    backend->init();
+LanguagePrivate::~LanguagePrivate()
+{
+    if (!collection) // Created our own backend.
+        delete backend;
 }
 
 void LanguagePrivate::transactionCleanup()
@@ -169,7 +205,6 @@ void LanguagePrivate::transactionFinished(QApt::ExitStatus exitStatus)
 
 void LanguagePrivate::possiblyAddMissingPackage(const QString &pkgName)
 {
-//    qDebug() << Q_FUNC_INFO << pkgName;
     QApt::Package *package = 0;
     package = backend->package(pkgName);
     if (package && !package->isInstalled() && !missingPackages.contains(package))
@@ -178,18 +213,18 @@ void LanguagePrivate::possiblyAddMissingPackage(const QString &pkgName)
 
 void LanguagePrivate::possiblyAddMissingPrefixPackage(const QString &prefix)
 {
-//    qDebug() << Q_FUNC_INFO << prefix;
     possiblyAddMissingPackage(prefix % kdeLanguage);
     possiblyAddMissingPackage(prefix % ubuntuLanguage);
 }
 
 Language::Language(QObject *parent)
     : Language(QString(), parent)
-{}
+{
+}
 
 Language::Language(const QString language, QObject *parent)
     : QObject(parent)
-    , d_ptr(new LanguagePrivate(this, language))
+    , d_ptr(new LanguagePrivate(this, language, qobject_cast<LanguageCollection *>(parent)))
 {
 }
 
@@ -197,10 +232,25 @@ Language::~Language()
 {
 }
 
-QString Language::languageCode() const
+QString Language::kdeCode() const
 {
     Q_D(const Language);
     return d->kdeLanguage;
+}
+
+QString Language::kdePackageCode() const
+{
+    Q_D(const Language);
+    // This is not cached because this is the only use we have internally and
+    // the function ought not be called that often (mostly once on init and
+    // once if the package is being installed, though even latter is unlikely).
+    return kdePackageCodeForKdeCode(d->kdeLanguage);
+}
+
+QString Language::ubuntuPackageCode() const
+{
+    Q_D(const Language);
+    return d->ubuntuLanguage;
 }
 
 QString Language::systemLanguageCode() const

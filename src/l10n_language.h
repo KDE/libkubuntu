@@ -7,6 +7,10 @@
 #include <QScopedPointer>
 #include <QString>
 
+namespace QApt {
+class Package;
+}
+
 namespace Kubuntu {
 
 class LanguagePrivate;
@@ -14,12 +18,32 @@ class KUBUNTU_EXPORT Language : public QObject
 {
     Q_OBJECT
 public:
-    Language(QObject *parent = 0);
-    Language(const QString language, QObject *parent = 0);
+    /** Constructs an instance with no language set
+     *.
+     * \param parent parent of the object, can be a LanguageCollection in which
+     *        case the internal QApt backend will be shared with the collection.
+     */
+    explicit Language(QObject *parent = 0);
+
+    /** Constructs an instance with a language set.
+     *
+     * \param language the KDE language code to use
+     * \param parent parent of the object, can be a LanguageCollection in which
+     *        case the internal QApt backend will be shared with the collection.
+     */
+    explicit Language(const QString language, QObject *parent = 0);
+
+    /** Destruct this thing! */
     ~Language();
 
     /** \returns the KDE language code (e.g. ca@valencia) */
-    QString languageCode() const;
+    QString kdeCode() const;
+
+    /** \returns the KDE package code for this language */
+    QString kdePackageCode() const;
+
+    /** \returns Ubuntu package code for this language */
+    QString ubuntuPackageCode() const;
 
     /** \returns the system language code (e.g. ca) */
     QString systemLanguageCode() const;
@@ -31,10 +55,13 @@ public:
     void completeSupport();
 
     /** \returns the Ubuntu package code (zh-hant) for a KDE l10n code (zh_TW) */
-    static QString ubuntuPackageForKdeCode(const QString &kdeCode);
+    static QString ubuntuPackageCodeForKdeCode(const QString &kdeCode);
 
     /** \returns the KDE l10n code (zh_TW) for a KDE package code (zhtw) */
-    static QString kdeCodeForKdePackage(const QString &kdePkg);
+    static QString kdeCodeForKdePackageCode(const QString &kdePkg);
+
+    /** \returns the KDE package code (zhtw) for the KDE package code (zh_TW) */
+    static QString kdePackageCodeForKdeCode(const QString &kdeCode);
 
 signals:
     /** Emitted once completeSupport has finished. \see completeSupport */

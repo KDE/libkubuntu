@@ -6,6 +6,8 @@
 #include <KSharedConfig>
 
 #include <QDebug>
+#include <QDir>
+#include <QFileInfo>
 
 namespace Kubuntu {
 
@@ -42,7 +44,7 @@ void LocalePrivate::init(LanguagePtrList _languages, QString _country)
     country = _country;
 
     // Parse additional stuff out of the main language's kde code.
-    QString mainLanguage = _languages.at(0)->languageCode();
+    QString mainLanguage = _languages.at(0)->kdeCode();
     qDebug() << mainLanguage;
     // Get variant.
     if (mainLanguage.contains(QChar('@'))) {
@@ -92,6 +94,24 @@ Locale::Locale(const QList<Language *> &languages, const QString &country)
     : d_ptr(new LocalePrivate)
 {
     Q_D(Locale);
+    foreach (Language *lang, languages) {
+        // We do manual life time control because Locale is no QObject.
+        lang->setParent(nullptr);
+    }
+    d->init(languages, country);
+}
+
+Locale::Locale(const QList<QString> &kdeLanguageCodes, const QString &country)
+    : d_ptr(new LocalePrivate)
+{
+    Q_D(Locale);
+
+    qDebug() << kdeLanguageCodes;
+    LanguagePtrList languages;
+    foreach (const QString &languageCode, kdeLanguageCodes) {
+        languages.append(new Language(languageCode));
+    }
+
     d->init(languages, country);
 }
 
@@ -135,6 +155,42 @@ QList<QString> Locale::systemLanguages() const
 QString Locale::systemLanguagesString() const
 {
     return QStringList(systemLanguages()).join(QChar(':'));
+}
+
+bool Locale::writeToFile(const QString &filePath)
+{
+    QDir dir = QFileInfo(filePath).absoluteDir();
+    dir.mkpath(dir.absolutePath());
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Couldn't open file for writing:" << filePath;
+        return false;
+    }
+
+    QTextStream stream(&file);
+    qDebug() << QString("export LANG=%1").arg(systemLocaleString());
+    qDebug() << QString("export LANGUAGE=%1").arg(systemLanguagesString());
+    stream << QString("export LANG=%1").arg(systemLocaleString()) << endl;
+    stream << QString("export LANGUAGE=%1").arg(systemLanguagesString()) << endl;
+    static QStringList lcVariables;
+    if (lcVariables.isEmpty()) {
+        lcVariables << QLatin1String("LC_NUMERIC")
+                    << QLatin1String("LC_TIME")
+                    << QLatin1String("LC_MONETARY")
+                    << QLatin1String("LC_PAPER")
+                    << QLatin1String("LC_IDENTIFICATION")
+                    << QLatin1String("LC_NAME")
+                    << QLatin1String("LC_ADDRESS")
+                    << QLatin1String("LC_TELEPHONE")
+                    << QLatin1String("LC_MEASUREMENT");
+    }
+    foreach (const QString &variable, lcVariables) {
+        qDebug() << QString("export %1=%2").arg(variable, systemLocaleString());
+        stream << QString("export %1=%2").arg(variable, systemLocaleString()) << endl;
+    }
+    file.close();
+    return true;
 }
 
 } // namespace Kubuntu

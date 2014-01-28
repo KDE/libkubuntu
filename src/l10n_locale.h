@@ -32,6 +32,8 @@ public:
      */
     Locale(const QList<Language *> &languages, const QString &country);
 
+    Locale(const QList<QString> &kdeLanguageCodes, const QString &country);
+
     /** Destructor. */
     ~Locale();
 
@@ -43,6 +45,8 @@ public:
 
     /** \returns the system languages string (e.g. de:fr:en); always ends with en */
     QString systemLanguagesString() const;
+
+    bool writeToFile(const QString &filePath);
 
 #warning todo maybe
 //    bool isValid() const;
