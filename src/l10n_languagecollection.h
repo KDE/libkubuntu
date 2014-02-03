@@ -30,18 +30,54 @@ namespace Kubuntu {
 class Language;
 
 class LanguageCollectionPrivate;
+
+/**
+ * \brief A LanguageCollection is a provider of all available Languages (packages).
+ *
+ * LanguageCollection is a wrapper around QApt querying all avilable language
+ * packages and creating a set of Language objects for them.
+ * This class is useful to batch query of all languages and should be preferred
+ * over creating Language instances directly as it results in a more centralized
+ * QApt handling.
+ *
+ * Additionally it takes care of parenting the Language instances and thus provides
+ * a convenience management interface.
+ */
 class KUBUNTU_EXPORT LanguageCollection : public QObject
 {
     Q_OBJECT
     friend class LanguagePrivate;
 public:
+    /**
+     * \brief Creates new collection.
+     *
+     * This internally initializes the QApt backend in a blocking manner, which
+     * means that this class potentially blocks the GUI thread while opening
+     * the APT cache.
+     *
+     * \param parent QObject parent.
+     */
     explicit LanguageCollection(QObject *parent = 0);
+
+    /** \returns \c true if the collection cache is up-to-date. */
     bool isUpdated();
+
+    /**
+     * Updates the collection cache. Should be called before using languages()
+     * to ensure that the language list is the most current set of available ones.
+     * This function is async.
+     * \see updated
+     */
     void update();
+
+    /** \returns a set of available languages (based on available packages) */
     QSet<Language *> languages();
 
 signals:
+    /** Emitted when the cache update progress changes \see update */
     void updateProgress(int progress);
+
+    /** Emitted when the cache update is finished \see update */
     void updated();
 
 private:
