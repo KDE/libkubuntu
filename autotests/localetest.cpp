@@ -13,6 +13,7 @@ private slots:
     void testKdeLocaleStringCtor();
     void testComplexList();
     void testEnUsComplexityException();
+    void testWriteFile();
 };
 
 typedef QList<Kubuntu::Language *> LangPtrList;
@@ -84,6 +85,46 @@ void localeTest::testEnUsComplexityException()
     Kubuntu::Locale l(list, QLatin1String("AU"));
     QCOMPARE(l.systemLocaleString(), QLatin1String("en_AU.UTF-8@valencia"));
     QCOMPARE(l.systemLanguagesString(), QLatin1String("en"));
+}
+
+void localeTest::testWriteFile()
+{
+    QTemporaryFile temp;
+    QVERIFY2(temp.open(), "opening temporary file failed");
+    LangPtrList list;
+    list.append(new Kubuntu::Language(QLatin1String("en_US@valencia")));
+    list.append(new Kubuntu::Language(QLatin1String("en_US")));
+    list.append(new Kubuntu::Language(QLatin1String("en_GB")));
+    list.append(new Kubuntu::Language(QLatin1String("de")));
+    list.append(new Kubuntu::Language(QLatin1String("fr")));
+    list.append(new Kubuntu::Language(QLatin1String("en_US")));
+    Kubuntu::Locale l(list, QLatin1String("BE"));
+    QVERIFY2(l.writeToFile(temp.fileName()), "writing locale to file failed!");
+
+    // Read. Validate LANG, LANGUAGE and first as well as last LC value.
+    QByteArray line;
+    QVERIFY(temp.reset());
+    QVERIFY(!temp.atEnd());
+
+    line = temp.readLine();
+    QCOMPARE(line, QByteArray("export LANG=en_BE.UTF-8@valencia\n"));
+    QVERIFY(!temp.atEnd());
+
+    line = temp.readLine();
+    QCOMPARE(line, QByteArray("export LANGUAGE=en:de:fr:en\n"));
+    QVERIFY(!temp.atEnd());
+
+    line = temp.readLine();
+    QCOMPARE(line, QByteArray("export LC_NUMERIC=en_BE.UTF-8@valencia\n"));
+    // Must contain time, monetary, paper, identification, name, address, telephone.
+    for (int i = 0; i < 7; ++i) {
+        temp.readLine();
+        QVERIFY(!temp.atEnd());
+    }
+
+    line = temp.readLine();
+    QCOMPARE(line, QByteArray("export LC_MEASUREMENT=en_BE.UTF-8@valencia\n"));
+    QVERIFY(temp.atEnd());
 }
 
 QTEST_MAIN(localeTest)
