@@ -1,0 +1,34 @@
+Source: libkubuntu
+Section: libs
+Priority: extra
+Maintainer: Kubuntu Developers <kubuntu-devel@lists.ubuntu.com>
+XSBC-Original-Maintainer: Harald Sitter <apachelogger@kubuntu.org>
+Build-Depends: debhelper (>= 9), cmake, kdelibs5-dev, libqapt-dev
+Standards-Version: 3.9.2
+Vcs-Git: git://anongit.kde.org/scratch/sitter/libkubuntu.git
+
+Package: libkubuntu0
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Multi-Arch: same
+Description: ((DESCRIPTION))
+ ((LONG DESCRIPTION))
+
+Package: libkubuntu-dev
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends}, libkubuntu0 (= ${binary:Version})
+Description: ((DESCRIPTION))
+ ((LONG DESCRIPTION))
+ .
+ These are the development files.
+
+Package: libkubuntu-dbg
+Section: debug
+Architecture: any
+Recommends: libqt4-dbg, libqapt-dbg
+Depends: ${misc:Depends}, libkubuntu0 (= ${binary:Version})
+Description: ((DESCRIPTION))
+ ((LONG DESCRIPTION))
+ .
+ These are the debuging files.
