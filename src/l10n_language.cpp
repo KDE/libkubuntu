@@ -156,7 +156,7 @@ LanguagePrivate::LanguagePrivate(Language *q,
     } else {
         // Collection is our parent, so it's no problem that we hold a ptr here.
         backend = &collection->d_ptr->backend;
-        // Backend assumed to be initalized by the user of the collection.
+        // Backend assumed to be initalized/updated by the user of the collection.
     }
 
     // Init languages.

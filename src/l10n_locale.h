@@ -31,6 +31,13 @@ namespace Kubuntu {
 class Language;
 
 class LocalePrivate;
+
+/**
+ * \brief The System Locale
+ *
+ * This is a convenience wrapper to translate a Kubuntu/KDE Language to
+ * a system locale value.
+ */
 class KUBUNTU_EXPORT Locale
 {
 public:
@@ -66,10 +73,20 @@ public:
     /** \returns the system languages string (e.g. de:fr:en); always ends with en */
     QString systemLanguagesString() const;
 
+    /**
+     * \brief Writes a set of locale exports to a file.
+     * This will write sh style system locale exports to a file.
+     *
+     * Exported values are:
+     *  - LANG=systemLocaleString()
+     *  - LANGUAGE=systemLanguages().join(':').append(":en")
+     *  - LC_{NUMERIC,TIME,MONETARY,...}=systemLocaleString()
+     *
+     * \param filePath the absolute file path of the file to write. parent
+     *                 directories will be created if not present.
+     * \return \c true on success, \c false if file could not be opened.
+     */
     bool writeToFile(const QString &filePath);
-
-#warning todo maybe
-//    bool isValid() const;
 
 private:
     const QScopedPointer<LocalePrivate> d_ptr;
