@@ -1,4 +1,10 @@
 #!/usr/bin/make -f
 
-%:
-	dh $@ --dbg-package=libkubuntu-dbg --parallel --with=kde,pkgkde-symbolshelper
+include /usr/share/pkg-kde-tools/qt-kde-team/2/debian-qt-kde.mk
+include /usr/share/pkg-kde-tools/qt-kde-team/2/library-packages.mk
+
+override_dh_auto_configure:
+	$(overridden_command) -- -DKDE4_BUILD_TESTS=ON
+
+override_dh_strip:
+	$(overridden_command) --dbg-package=libkubuntu-dbg
