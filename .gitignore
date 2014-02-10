@@ -1,4 +1,29 @@
-*.swp
+# -- Misc --
+# Random build dir
 build
-build5
-apidocs
+# vim backup files
+*.swp
+
+# -- QTC --
+CMakeLists.txt.user*
+
+# -- Debian --
+
+# Build directory
+obj-*-linux-gnu
+
+# DHMK files
+debian/dhmk*
+
+# Debhelper files
+debian/*.log
+debian/*.debhelper
+debian/*.substvars
+
+# Install dirs
+debian/tmp
+debian/lib*/*
+
+# Random plunder
+debian/stamp-man-pages
+debian/files
