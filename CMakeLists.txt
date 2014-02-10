@@ -24,20 +24,6 @@ add_subdirectory(src)
 
 # --------------------------
 
-set(demo_SRCS
-    main.cpp
-)
-
-kde4_add_executable(demo ${demo_SRCS})
-target_link_libraries(demo
-    ${QT_QTGUI_LIBRARY}
-    ${KDE4_KDECORE_LIBS}
-    ${KDE4_KDEUI_LIBRARY}
-    Kubuntu
-)
-
-# --------------------------
-
 if(KDE4_BUILD_TESTS)
     add_subdirectory(autotests)
 endif()
