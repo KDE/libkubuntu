@@ -40,14 +40,14 @@ libKubuntu.so.0 libkubuntu0 #MINVER#
  _ZN7Kubuntu8Language16staticMetaObjectE@Base 14.04ubuntu1
  _ZN7Kubuntu8Language17isSupportCompleteEv@Base 14.04ubuntu1
  _ZN7Kubuntu8Language23supportCompletionFailedEv@Base 14.04ubuntu1
- _ZN7Kubuntu8Language24kdeCodeForKdePackageCodeERK7QString@Base 14.04ubuntu1
- _ZN7Kubuntu8Language24kdePackageCodeForKdeCodeERK7QString@Base 14.04ubuntu1
  _ZN7Kubuntu8Language25supportCompletionProgressEi@Base 14.04ubuntu1
  _ZN7Kubuntu8Language27ubuntuPackageCodeForKdeCodeERK7QString@Base 14.04ubuntu1
+ _ZN7Kubuntu8Language32kdeLanguageCodeForKdePackageCodeERK7QString@Base 14.04ubuntu1
+ _ZN7Kubuntu8Language32kdePackageCodeForKdeLanguageCodeERK7QString@Base 14.04ubuntu1
  _ZN7Kubuntu8LanguageC1E7QStringP7QObject@Base 14.04ubuntu1
- _ZN7Kubuntu8LanguageC1EP7QObject@Base 14.04ubuntu1
+ _ZN7Kubuntu8LanguageC1Ev@Base 14.04ubuntu1
  _ZN7Kubuntu8LanguageC2E7QStringP7QObject@Base 14.04ubuntu1
- _ZN7Kubuntu8LanguageC2EP7QObject@Base 14.04ubuntu1
+ _ZN7Kubuntu8LanguageC2Ev@Base 14.04ubuntu1
  _ZN7Kubuntu8LanguageD0Ev@Base 14.04ubuntu1
  _ZN7Kubuntu8LanguageD1Ev@Base 14.04ubuntu1
  _ZN7Kubuntu8LanguageD2Ev@Base 14.04ubuntu1
@@ -58,9 +58,9 @@ libKubuntu.so.0 libkubuntu0 #MINVER#
  _ZNK7Kubuntu6Locale21systemLanguagesStringEv@Base 14.04ubuntu1
  _ZNK7Kubuntu8Language10metaObjectEv@Base 14.04ubuntu1
  _ZNK7Kubuntu8Language14kdePackageCodeEv@Base 14.04ubuntu1
+ _ZNK7Kubuntu8Language15kdeLanguageCodeEv@Base 14.04ubuntu1
  _ZNK7Kubuntu8Language17ubuntuPackageCodeEv@Base 14.04ubuntu1
  _ZNK7Kubuntu8Language18systemLanguageCodeEv@Base 14.04ubuntu1
- _ZNK7Kubuntu8Language7kdeCodeEv@Base 14.04ubuntu1
  _ZTIN7Kubuntu11BusyOverlayE@Base 14.04ubuntu1
  _ZTIN7Kubuntu18LanguageCollectionE@Base 14.04ubuntu1
  _ZTIN7Kubuntu8LanguageE@Base 14.04ubuntu1
