@@ -49,6 +49,14 @@ public:
 
     /**
      * Constructs a Locale from a predefined set of languages and a country.
+     * The LOCALE is built from the first language in the list and the country.
+     * The LANGUAGES list is built according to the passed languages list.
+     *
+     * \code
+     * QList<..> list << "en" << "de" << "fr";
+     * Locale(list, "US").systemLocaleString(); // en_US.UTF-8
+     * Locale(list, "US").systemLanguagesString(); // en:de:fr:en
+     * \endcode
      *
      * \warning Owernship of the Language instances moves to the Locale, once
      *          the constructor returns you should throw away your references as
@@ -59,6 +67,17 @@ public:
      */
     Locale(const QList<Language *> &languages, const QString &country);
 
+    /**
+     * Overload constructor, internally constructs Language objects from the
+     * passed kdeLanguageCodes. This constructor should be avoided whenever you
+     * actually want to do more than just know the LOCALE of a random set of
+     * languages as constructing Languages outside a LanguageCollection is
+     * substantially more costly.
+     *
+     * \see Locale(const QList<Language *> &languages, const QString &country);
+     * \param kdeLanguageCodes list of valid KDE language codes.
+     * \param country the country for this locale.
+     */
     Locale(const QList<QString> &kdeLanguageCodes, const QString &country);
 
     /** Destructor. */
