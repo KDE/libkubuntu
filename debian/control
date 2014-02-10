@@ -10,15 +10,19 @@ Vcs-Git: git://anongit.kde.org/scratch/sitter/libkubuntu.git
 Package: libkubuntu0
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: ((DESCRIPTION))
- ((LONG DESCRIPTION))
+Description: library for Kubuntu platform integration
+ This library bundles logic required for convenient Kubuntu specific integration
+ of Qt and KDE software, such as localization handling and on-demand capability
+ expansion by installing packages.
 
 Package: libkubuntu-dev
 Section: libdevel
 Architecture: any
 Depends: ${misc:Depends}, libkubuntu0 (= ${binary:Version})
-Description: ((DESCRIPTION))
- ((LONG DESCRIPTION))
+Description: library for Kubuntu platform integration - development files
+ This library bundles logic required for convenient Kubuntu specific integration
+ of Qt and KDE software, such as localization handling and on-demand capability
+ expansion by installing packages.
  .
  These are the development files.
 
@@ -27,7 +31,9 @@ Section: debug
 Architecture: any
 Recommends: libqt4-dbg, libqapt-dbg
 Depends: ${misc:Depends}, libkubuntu0 (= ${binary:Version})
-Description: ((DESCRIPTION))
- ((LONG DESCRIPTION))
+Description: library for Kubuntu platform integration - debugging files
+ This library bundles logic required for convenient Kubuntu specific integration
+ of Qt and KDE software, such as localization handling and on-demand capability
+ expansion by installing packages.
  .
- These are the debuging files.
+ These are the debugging files.
