@@ -27,37 +27,36 @@
 #include <QScopedPointer>
 #include <QString>
 
-namespace QApt {
-class Package;
-}
-
 namespace Kubuntu {
 
 class LanguagePrivate;
+
+/**
+ * Language is the internal representation and management unit for KDE languages.
+ * Instances are created from a KDE language code and allow the installation
+ * of system wide dependencies required to allow for a complete localized
+ * user experience.
+ *
+ * Whenever possible Languages should be obtained from a LanguageCollection
+ * rather than getting manually constructed.
+ */
 class KUBUNTU_EXPORT Language : public QObject
 {
     Q_OBJECT
 public:
-    /** Constructs an instance with no language set
-     *.
-     * \param parent parent of the object, can be a LanguageCollection in which
-     *        case the internal QApt backend will be shared with the collection.
-     */
-    explicit Language(QObject *parent = 0);
-
     /** Constructs an instance with a language set.
      *
      * \param language the KDE language code to use
      * \param parent parent of the object, can be a LanguageCollection in which
      *        case the internal QApt backend will be shared with the collection.
      */
-    explicit Language(const QString language, QObject *parent = 0);
+    explicit Language(const QString kdeLanguageCode, QObject *parent = 0);
 
     /** Destruct this thing! */
     ~Language();
 
     /** \returns the KDE language code (e.g. ca@valencia) */
-    QString kdeCode() const;
+    QString kdeLanguageCode() const;
 
     /** \returns the KDE package code for this language */
     QString kdePackageCode() const;
@@ -68,20 +67,23 @@ public:
     /** \returns the system language code (e.g. ca) */
     QString systemLanguageCode() const;
 
-    /** \returns \c true when all packages for this language are installed */
+    /**
+     * \returns \c true when all packages for this language are installed or
+     * the actual state can not be detected.
+     */
     bool isSupportComplete();
 
     /** Installs all missing packages for languages; async \see supportComplete */
     void completeSupport();
 
     /** \returns the Ubuntu package code (zh-hant) for a KDE l10n code (zh_TW) */
-    static QString ubuntuPackageCodeForKdeCode(const QString &kdeCode);
+    static QString ubuntuPackageCodeForKdeCode(const QString &kdeLanguageCode);
 
     /** \returns the KDE l10n code (zh_TW) for a KDE package code (zhtw) */
-    static QString kdeCodeForKdePackageCode(const QString &kdePkg);
+    static QString kdeLanguageCodeForKdePackageCode(const QString &kdePkg);
 
     /** \returns the KDE package code (zhtw) for the KDE package code (zh_TW) */
-    static QString kdePackageCodeForKdeCode(const QString &kdeCode);
+    static QString kdePackageCodeForKdeLanguageCode(const QString &kdeLanguageCode);
 
 signals:
     /** Emitted once completeSupport has finished. \see completeSupport */
@@ -98,6 +100,9 @@ signals:
     void supportCompletionProgress(int progress);
 
 private:
+    // Prevent construction of definitely invalid Language instances.
+    Language();
+
     const QScopedPointer<LanguagePrivate> d_ptr;
     Q_DECLARE_PRIVATE(Language)
     Q_PRIVATE_SLOT(d_func(),void transactionFinished(QApt::ExitStatus))

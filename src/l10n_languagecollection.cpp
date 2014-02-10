@@ -80,7 +80,7 @@ QSet<Language *> LanguageCollection::languages()
             // the Language ctor, as we like to utilize init lists in there.
             // Also there ought not be a use case to construct a Language
             // from a Package outside the collection.
-            Language *language = new Language(Language::kdeCodeForKdePackageCode(languageCode), this);
+            Language *language = new Language(Language::kdeLanguageCodeForKdePackageCode(languageCode), this);
             languages.insert(language);
         }
     }

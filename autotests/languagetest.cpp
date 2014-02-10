@@ -14,14 +14,14 @@ private slots:
 void languageTest::testVariantStripping()
 {
     Kubuntu::Language l(QLatin1String("ca@valencia"));
-    QCOMPARE(l.kdeCode(), QString("ca@valencia"));
+    QCOMPARE(l.kdeLanguageCode(), QString("ca@valencia"));
     QCOMPARE(l.systemLanguageCode(), QString("ca"));
 }
 
 void languageTest::testCountryStripping()
 {
     Kubuntu::Language l(QLatin1String("en_GB"));
-    QCOMPARE(l.kdeCode(), QString("en_GB"));
+    QCOMPARE(l.kdeLanguageCode(), QString("en_GB"));
     QCOMPARE(l.systemLanguageCode(), QString("en"));
 }
 

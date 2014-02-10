@@ -64,7 +64,7 @@ void LocalePrivate::init(LanguagePtrList _languages, QString _country)
     country = _country;
 
     // Parse additional stuff out of the main language's kde code.
-    QString mainLanguage = _languages.at(0)->kdeCode();
+    QString mainLanguage = _languages.at(0)->kdeLanguageCode();
     qDebug() << mainLanguage;
     // Get variant.
     if (mainLanguage.contains(QChar('@'))) {

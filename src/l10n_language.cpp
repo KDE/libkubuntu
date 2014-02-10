@@ -63,7 +63,7 @@ QString Language::ubuntuPackageCodeForKdeCode(const QString &kdeCode)
     return ubuntuPkg;
 }
 
-QString Language::kdeCodeForKdePackageCode(const QString &kdePkg)
+QString Language::kdeLanguageCodeForKdePackageCode(const QString &kdePkg)
 {
     QString kdeCode = kdePkg;
     for (int i = 0; s_languageCodeMap[i][0]; ++i) {
@@ -75,7 +75,7 @@ QString Language::kdeCodeForKdePackageCode(const QString &kdePkg)
     return kdeCode;
 }
 
-QString Language::kdePackageCodeForKdeCode(const QString &kdeCode)
+QString Language::kdePackageCodeForKdeLanguageCode(const QString &kdeCode)
 {
     QString kdePkg = kdeCode;
     for (int i = 0; s_languageCodeMap[i][0]; ++i) {
@@ -237,8 +237,7 @@ void LanguagePrivate::possiblyAddMissingPrefixPackage(const QString &prefix)
     possiblyAddMissingPackage(prefix % ubuntuLanguage);
 }
 
-Language::Language(QObject *parent)
-    : Language(QString(), parent)
+Language::Language()
 {
 }
 
@@ -252,7 +251,7 @@ Language::~Language()
 {
 }
 
-QString Language::kdeCode() const
+QString Language::kdeLanguageCode() const
 {
     Q_D(const Language);
     return d->kdeLanguage;
@@ -264,7 +263,7 @@ QString Language::kdePackageCode() const
     // This is not cached because this is the only use we have internally and
     // the function ought not be called that often (mostly once on init and
     // once if the package is being installed, though even latter is unlikely).
-    return kdePackageCodeForKdeCode(d->kdeLanguage);
+    return kdePackageCodeForKdeLanguageCode(d->kdeLanguage);
 }
 
 QString Language::ubuntuPackageCode() const
