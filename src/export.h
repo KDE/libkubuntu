@@ -23,6 +23,12 @@
 
 #include <QtCore/QtGlobal>
 
+/**
+ * \file export.h
+ * Library export macros to handle symbol import/export as well as marking
+ * functions as deprecated.
+ */
+
 #ifndef KUBUNTU_EXPORT
 # if defined Q_WS_WIN
 #  ifdef MAKE_KUBUNTU_LIB /* We are building this library */
