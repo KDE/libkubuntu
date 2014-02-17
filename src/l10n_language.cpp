@@ -298,7 +298,7 @@ bool Language::isSupportComplete()
     columns << QLatin1String("tr") << QLatin1String("wa")
             << QLatin1String("fn") << QLatin1String("in");
     while (!file.atEnd()) {
-        QString line = file.readLine();
+        const QString line = file.readLine().simplified();
         QStringList pkgDepends = line.split(':');
 
         if (pkgDepends.isEmpty())
@@ -313,7 +313,6 @@ bool Language::isSupportComplete()
             //if it is always to be installed, go for it
             if (pkgDepends.at(2).isEmpty()) {
                 QString prefix = pkgDepends.at(3);
-                prefix.chop(1);
 
                 d->possiblyAddMissingPrefixPackage(prefix);
             } else {
@@ -321,7 +320,6 @@ bool Language::isSupportComplete()
                 QApt::Package *dependency = d->backend->package(pkgDepends.at(2));
                 if (dependency && !dependency->installedVersion().isEmpty()) {
                     QString prefix = pkgDepends.at(3);
-                    prefix.chop(1);
 
                     // There are per-language packages such as kde-l10n-xx and meta ones such as chromium-l10n.
                     // Former needs concat whereas latter needs as-is usage
