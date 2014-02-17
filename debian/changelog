@@ -3,6 +3,8 @@ libkubuntu (14.04ubuntu3) UNRELEASED; urgency=medium
   * Instead of manually chopping newlines, use QString::simplified
   * Use correct kde code mapping to resolve prefix packages
   * Add Language::missingPackages to get a list of all missing packages
+  * Explicitly define a LanguageCollection destructor to prevent QScopedPointer
+    from acting up because LanguageCollectionPrivate is a forward decl.
 
  -- Harald Sitter <apachelogger@kubuntu.org>  Mon, 17 Feb 2014 14:19:51 +0100
 

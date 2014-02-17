@@ -59,6 +59,9 @@ public:
      */
     explicit LanguageCollection(QObject *parent = 0);
 
+    /** EXTERMINATE */
+    ~LanguageCollection();
+
     /** \returns \c true if the collection cache is up-to-date. */
     bool isUpdated();
 

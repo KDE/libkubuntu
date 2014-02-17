@@ -43,6 +43,10 @@ LanguageCollection::LanguageCollection(QObject *parent)
             this, SIGNAL(updated()));
 }
 
+LanguageCollection::~LanguageCollection()
+{
+}
+
 bool LanguageCollection::isUpdated()
 {
     Q_D(LanguageCollection);
