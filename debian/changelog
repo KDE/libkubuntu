@@ -1,4 +1,4 @@
-libkubuntu (14.04ubuntu4) UNRELEASED; urgency=medium
+libkubuntu (14.04ubuntu3) UNRELEASED; urgency=medium
 
   * Instead of manually chopping newlines, use QString::simplified
   * Use correct kde code mapping to resolve prefix packages
