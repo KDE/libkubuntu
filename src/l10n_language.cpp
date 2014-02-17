@@ -233,7 +233,7 @@ void LanguagePrivate::possiblyAddMissingPackage(const QString &pkgName)
 
 void LanguagePrivate::possiblyAddMissingPrefixPackage(const QString &prefix)
 {
-    possiblyAddMissingPackage(prefix % kdeLanguage);
+    possiblyAddMissingPackage(prefix % Language::kdePackageCodeForKdeLanguageCode(kdeLanguage));
     possiblyAddMissingPackage(prefix % ubuntuLanguage);
 }
 
