@@ -73,6 +73,9 @@ public:
      */
     bool isSupportComplete();
 
+    /** \returns a list of all package names that need to be installed */
+    QStringList missingPackages() const;
+
     /** Installs all missing packages for languages; async \see supportComplete */
     void completeSupport();
 

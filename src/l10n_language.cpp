@@ -337,6 +337,16 @@ bool Language::isSupportComplete()
     return false;
 }
 
+QStringList Language::missingPackages() const
+{
+    Q_D(const Language);
+    QStringList list;
+    foreach (QApt::Package *package, d->missingPackages) {
+        list.append(package->name());
+    }
+    return list;
+}
+
 void Language::completeSupport()
 {
     Q_D(Language);
