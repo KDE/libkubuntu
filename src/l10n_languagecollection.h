@@ -57,7 +57,7 @@ public:
      *
      * \param parent QObject parent.
      */
-    explicit LanguageCollection(QObject *parent = 0);
+    LanguageCollection(QObject *parent = 0);
 
     /** EXTERMINATE */
     ~LanguageCollection();

@@ -5,8 +5,9 @@ libkubuntu (14.04ubuntu3) UNRELEASED; urgency=medium
   * Add Language::missingPackages to get a list of all missing packages
   * Explicitly define a LanguageCollection destructor to prevent QScopedPointer
     from acting up because LanguageCollectionPrivate is a forward decl.
+  * Make LangaugeCollection() non-explicit, doesn't add any value.
 
- -- Harald Sitter <apachelogger@kubuntu.org>  Mon, 17 Feb 2014 14:19:51 +0100
+ -- Harald Sitter <apachelogger@kubuntu.org>  Mon, 17 Feb 2014 15:17:06 +0100
 
 libkubuntu (14.04ubuntu2) trusty; urgency=medium
 
