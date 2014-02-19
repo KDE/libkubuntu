@@ -41,6 +41,7 @@ namespace Kubuntu {
 #warning global static in library...
 static const char *s_languageCodeMap[][3] = {
     // kdepkgcode       kdecode         ubuntupkgcode
+    { "en",             "en_US",        "en"            }, // See LanguageCollection.
     { "engb",           "en_GB",        "en"            },
     { "ca-valencia",    "ca@valencia",  "ca"            },
     { "ptbr",           "pt_BR",        "pt"            },

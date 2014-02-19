@@ -5,7 +5,13 @@ libkubuntu (14.04ubuntu3) UNRELEASED; urgency=medium
   * Add Language::missingPackages to get a list of all missing packages
   * Explicitly define a LanguageCollection destructor to prevent QScopedPointer
     from acting up because LanguageCollectionPrivate is a forward decl.
-  * Make LangaugeCollection() non-explicit, doesn't add any value.
+  * Make LanguageCollection() non-explicit, doesn't add any value.
+  * Inject a fake en_US Language instance in the LanguageCollection
+    + en_US is now mapped to generic en codes for both our's and Ubuntu's
+      general l10n packaging.
+    + The point of this is to ensure that for example english documentation
+      such as amarok-help-en is installed on en_US systems that would
+      otherwise not require any additional packages.
 
  -- Harald Sitter <apachelogger@kubuntu.org>  Mon, 17 Feb 2014 15:17:06 +0100
 

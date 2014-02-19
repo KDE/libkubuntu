@@ -89,6 +89,15 @@ QSet<Language *> LanguageCollection::languages()
         }
     }
 
+    // Manually inject en_US. This language does not actually exist, but is
+    // referenced on multiple occasions. We need to explicitly handle en_US
+    // because Ubuntu has a lot of stuff in language packs per language, such
+    // that documentation for gimp could for example be in gimp-help-en. Unless
+    // we allow en_US systems to check for completeness WRT this, they will have
+    // incomplete localization.
+    Language *languageEnUs = new Language("en_US", this);
+    languages.insert(languageEnUs);
+
     return languages;
 }
 
