@@ -1,4 +1,4 @@
-libkubuntu (14.04ubuntu3) UNRELEASED; urgency=medium
+libkubuntu (14.04ubuntu3) trusty; urgency=medium
 
   * Instead of manually chopping newlines, use QString::simplified
   * Use correct kde code mapping to resolve prefix packages
@@ -13,7 +13,7 @@ libkubuntu (14.04ubuntu3) UNRELEASED; urgency=medium
       such as amarok-help-en is installed on en_US systems that would
       otherwise not require any additional packages.
 
- -- Harald Sitter <apachelogger@kubuntu.org>  Mon, 17 Feb 2014 15:17:06 +0100
+ -- Harald Sitter <apachelogger@kubuntu.org>  Thu, 20 Feb 2014 09:56:51 +0100
 
 libkubuntu (14.04ubuntu2) trusty; urgency=medium
 
