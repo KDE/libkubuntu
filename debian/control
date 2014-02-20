@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: Kubuntu Developers <kubuntu-devel@lists.ubuntu.com>
 XSBC-Original-Maintainer: Harald Sitter <apachelogger@kubuntu.org>
 Build-Depends: debhelper (>= 9), pkg-kde-tools, cmake, kdelibs5-dev, libqapt-dev
-Standards-Version: 3.9.4
+Standards-Version: 3.9.5
 Vcs-Git: git://anongit.kde.org/scratch/sitter/libkubuntu.git
 
 Package: libkubuntu0

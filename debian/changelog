@@ -1,3 +1,9 @@
+libkubuntu (14.04ubuntu4) UNRELEASED; urgency=medium
+
+  * Bump standards from 3.9.4. to 3.9.5 to silence lintian.
+
+ -- Harald Sitter <apachelogger@kubuntu.org>  Thu, 20 Feb 2014 09:58:25 +0100
+
 libkubuntu (14.04ubuntu3) trusty; urgency=medium
 
   * Instead of manually chopping newlines, use QString::simplified
