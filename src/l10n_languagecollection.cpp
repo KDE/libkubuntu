@@ -28,6 +28,7 @@
 namespace Kubuntu {
 
 LanguageCollectionPrivate::LanguageCollectionPrivate()
+    : initalized(false)
 {
 }
 
@@ -36,7 +37,7 @@ LanguageCollection::LanguageCollection(QObject *parent)
     , d_ptr(new LanguageCollectionPrivate)
 {
     Q_D(LanguageCollection);
-    d->backend.init();
+    d->initalized = d->backend.init();
     connect(&d->backend, SIGNAL(xapianUpdateProgress(int)),
             this, SIGNAL(updateProgress(int)));
     connect(&d->backend, SIGNAL(xapianUpdateFinished()),
@@ -68,7 +69,18 @@ QSet<Language *> LanguageCollection::languages()
 {
     Q_D(LanguageCollection);
 
+    // Prevent access to an uninitalized backend as QApt doesn't really like it
+    // and tends to explode at one point or another.
+    // Init can only fail when either the config parsing/loading did not
+    // work or when the cache cannot be opened for reading. Both are rather
+    // fatal, so we are not going to try to recover functionality. Once init
+    // failed the collection will be defunct.
+    if (!d->initalized) {
+        return QSet<Language *>();
+    }
+
     // Make sure the xapian cache is open at this point.
+    // TODO: look into the necessity of calling reloadCache here.
     d->backend.openXapianIndex();
 
     const QString queryString = QLatin1String("kde-l10n-");

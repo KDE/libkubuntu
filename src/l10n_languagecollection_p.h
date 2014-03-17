@@ -31,6 +31,8 @@ public:
     LanguageCollectionPrivate();
 
     QApt::Backend backend;
+
+    bool initalized;
 };
 
 } // namespace Kubuntu
