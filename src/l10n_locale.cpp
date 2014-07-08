@@ -77,7 +77,7 @@ void LocalePrivate::init(LanguagePtrList _languages, QString _country)
     // Get possibly implicit country to override manually defined one.
     // For example zh_CN must be zh_CN because that is a different language from
     // zh_TW.
-    // en_US is exepcted from this rule as 'en' is the uniform base language
+    // en_US is excepted from this rule as 'en' is the uniform base language
     // and makes sense for everything.
     if (mainLanguage.contains(QChar('_')) && !mainLanguage.startsWith(QLatin1String("en_US"))) {
         QStringList components = mainLanguage.split(QChar('_'));

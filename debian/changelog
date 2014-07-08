@@ -1,3 +1,9 @@
+libkubuntu (14.04ubuntu5) UNRELEASED; urgency=medium
+
+  * Fix comment typo
+
+ -- Harald Sitter <apachelogger@kubuntu.org>  Wed, 09 Jul 2014 00:20:51 +0200
+
 libkubuntu (14.04ubuntu4) trusty; urgency=medium
 
   * Bump standards from 3.9.4. to 3.9.5 to silence lintian.
