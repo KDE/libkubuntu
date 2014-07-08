@@ -1,8 +1,22 @@
-libkubuntu (14.04ubuntu5) UNRELEASED; urgency=medium
+libkubuntu (14.04ubuntu6) UNRELEASED; urgency=medium
 
   * Fix comment typo
+  * Add additional safeguard logic when writing the the locale env vars
+    to prevent people from breaking their system by defining country-language
+    combinations we cannot represent on a POSIX level.
+    The added logic gets a list of all valid locales by running locale -a
+    and then compares the reference locale with the supported ones.
+    If no perfect match is found only LANGUAGE is written as bogus values
+    have no adverse effect with this variable, the other ones however are
+    explicitly excluded. Only if a locale can be verified as supported will
+    we write LANG and LC_*.
+    LP: #1322968
+  * Add new directory kconf_update and a c++ updater
+    libkubuntu-force-setlocale-rewrite-14-04 to force a rewrite of setlocale
+    iff the file already exists. This ensures that broken setups get fixed
+    according to the new write rules outlined above.
 
- -- Harald Sitter <apachelogger@kubuntu.org>  Wed, 09 Jul 2014 00:20:51 +0200
+ -- Harald Sitter <apachelogger@kubuntu.org>  Wed, 09 Jul 2014 00:50:51 +0200
 
 libkubuntu (14.04ubuntu4) trusty; urgency=medium
 

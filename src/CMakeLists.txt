@@ -13,6 +13,8 @@ set(kubuntu_SRCS
 kde4_add_ui_files(kubuntu_SRCS busyoverlay.ui)
 kde4_add_library(Kubuntu SHARED ${kubuntu_SRCS})
 
+target_include_directories(Kubuntu PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/>")
+
 set_target_properties(Kubuntu
     PROPERTIES VERSION ${KUBUNTU_VERSION} SOVERSION ${KUBUNTU_VERSION_MAJOR}
 )

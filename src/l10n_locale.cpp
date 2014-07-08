@@ -177,6 +177,39 @@ QString Locale::systemLanguagesString() const
     return QStringList(systemLanguages()).join(QChar(':'));
 }
 
+// NOTE: not public as there is no external use for this right now
+static bool isLocaleStringValid(const QString &locale)
+{
+    QProcess process;
+    process.start(QLatin1String("locale"), QStringList() << QLatin1String("-a"));
+    bool finished = process.waitForFinished(30 * 1000); // If locale takes more than 30 secs something is very wrong
+    if (!finished || process.exitStatus() != QProcess::NormalExit || process.exitCode() != 0) {
+        return false;
+    }
+
+    // We need to split the encoding from the locale as there's different
+    // formats floating around as supported (e.g. utf-8 vs. utf8)
+    // Also we only support utf-8 anyway, so it doesn't matter much as we assume
+    // it is always supported on Kubuntu systems.
+    const QString lowerLocale = locale.toLower().split(QChar('.')).first();
+    while (process.canReadLine()) {
+        QString line = QString(process.readLine()).remove(QChar('\n'));
+        line = line.split(QChar('.')).first();
+        line = line.toLower();
+        if (line == lowerLocale) {
+            return true;
+        }
+    }
+
+    // If locale -a didn't give a perfect match for the defined locale we must
+    // assume it is invalid.
+    return false;
+}
+
+// TODO: we likely should introduce GUI backing for only partially applying
+//       the configured settings. Then again, when someone is using a
+//       non-standard locale they likely won't notice or care about random
+//       localization inconsistencies.
 bool Locale::writeToFile(const QString &filePath)
 {
     QDir dir = QFileInfo(filePath).absoluteDir();
@@ -189,26 +222,40 @@ bool Locale::writeToFile(const QString &filePath)
     }
 
     QTextStream stream(&file);
-    qDebug() << QString("export LANG=%1").arg(systemLocaleString());
+
+    // Due to the fact that KDE country and language are independent settings we
+    // can construct an entirely invalid locale such as en_AT if the user wishes
+    // to use english with Austrian format settings. We cannot accurately
+    // translate this to a glib locale, so we must quite simply discard any
+    // and all attempts at getting the format defining variables right and
+    // can only set LANGUAGE in this case. As language either contains a 
+    // (hopefully) valid locale as used by KDE (e.g. en_GB, zh_TW ...) or
+    // language-only identifiers (e.g. de).
+    // NOTE: LANGUAGE can contain any old nonsense as it has a built-in fallback
+    //       logic and we always force en as final option explicitly.
     qDebug() << QString("export LANGUAGE=%1").arg(systemLanguagesString());
-    stream << QString("export LANG=%1").arg(systemLocaleString()) << endl;
     stream << QString("export LANGUAGE=%1").arg(systemLanguagesString()) << endl;
-    static QStringList lcVariables;
-    if (lcVariables.isEmpty()) {
-        lcVariables << QLatin1String("LC_NUMERIC")
-                    << QLatin1String("LC_TIME")
-                    << QLatin1String("LC_MONETARY")
-                    << QLatin1String("LC_PAPER")
-                    << QLatin1String("LC_IDENTIFICATION")
-                    << QLatin1String("LC_NAME")
-                    << QLatin1String("LC_ADDRESS")
-                    << QLatin1String("LC_TELEPHONE")
-                    << QLatin1String("LC_MEASUREMENT");
+    if (isLocaleStringValid(systemLocaleString())) {
+        qDebug() << QString("export LANG=%1").arg(systemLocaleString());
+        stream << QString("export LANG=%1").arg(systemLocaleString()) << endl;
+        static QStringList lcVariables;
+        if (lcVariables.isEmpty()) {
+            lcVariables << QLatin1String("LC_NUMERIC")
+                        << QLatin1String("LC_TIME")
+                        << QLatin1String("LC_MONETARY")
+                        << QLatin1String("LC_PAPER")
+                        << QLatin1String("LC_IDENTIFICATION")
+                        << QLatin1String("LC_NAME")
+                        << QLatin1String("LC_ADDRESS")
+                        << QLatin1String("LC_TELEPHONE")
+                        << QLatin1String("LC_MEASUREMENT");
+        }
+        foreach (const QString &variable, lcVariables) {
+            qDebug() << QString("export %1=%2").arg(variable, systemLocaleString());
+            stream << QString("export %1=%2").arg(variable, systemLocaleString()) << endl;
+        }
     }
-    foreach (const QString &variable, lcVariables) {
-        qDebug() << QString("export %1=%2").arg(variable, systemLocaleString());
-        stream << QString("export %1=%2").arg(variable, systemLocaleString()) << endl;
-    }
+
     file.close();
     return true;
 }

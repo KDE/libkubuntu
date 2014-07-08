@@ -20,6 +20,7 @@ set(KUBUNTU_VERSION ${KUBUNTU_VERSION_MAJOR}.${KUBUNTU_VERSION_MINOR}.${KUBUNTU_
 
 # --------------------------
 
+add_subdirectory(kconf_update)
 add_subdirectory(src)
 
 # --------------------------
