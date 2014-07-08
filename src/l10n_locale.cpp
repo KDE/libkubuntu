@@ -28,6 +28,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
+#include <QProcess>
 
 namespace Kubuntu {
 
