@@ -18,7 +18,6 @@
   License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
 #include <QFile>
 #include <QString>
 #include <QStringBuilder>
@@ -32,7 +31,6 @@ int main(int argc, char *argv[])
 {
     const QString envPath = KGlobal::dirs()->localkdedir() % QLatin1String("/env");
     const QString envFile = envPath % QLatin1String("/setlocale.sh");
-    qDebug() << envFile;
     if (QFile::exists(envFile)) {
         // Only rewrite the file iff it already exists, otherwise a user may have
         // removed it and we restore it which doesn't seem particularly nice.
