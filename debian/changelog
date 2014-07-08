@@ -1,4 +1,4 @@
-libkubuntu (14.04ubuntu6) UNRELEASED; urgency=medium
+libkubuntu (14.04ubuntu5) UNRELEASED; urgency=medium
 
   * Fix comment typo
   * Add additional safeguard logic when writing the the locale env vars
