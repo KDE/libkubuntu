@@ -1,4 +1,4 @@
-# SymbolsHelper-Confirmed: 14.04ubuntu1 amd64
+# SymbolsHelper-Confirmed: 14.10ubuntu1 amd64
 libKubuntu.so.0 libkubuntu0 #MINVER#
  _ZN7Kubuntu11BusyOverlay11eventFilterEP7QObjectP6QEvent@Base 14.04ubuntu1
  _ZN7Kubuntu11BusyOverlay11qt_metacallEN11QMetaObject4CallEiPPv@Base 14.04ubuntu1
@@ -59,6 +59,7 @@ libKubuntu.so.0 libkubuntu0 #MINVER#
  _ZNK7Kubuntu8Language10metaObjectEv@Base 14.04ubuntu1
  _ZNK7Kubuntu8Language14kdePackageCodeEv@Base 14.04ubuntu1
  _ZNK7Kubuntu8Language15kdeLanguageCodeEv@Base 14.04ubuntu1
+ _ZNK7Kubuntu8Language15missingPackagesEv@Base 14.10ubuntu1
  _ZNK7Kubuntu8Language17ubuntuPackageCodeEv@Base 14.04ubuntu1
  _ZNK7Kubuntu8Language18systemLanguageCodeEv@Base 14.04ubuntu1
  _ZTIN7Kubuntu11BusyOverlayE@Base 14.04ubuntu1

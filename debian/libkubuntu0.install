@@ -1,2 +1,4 @@
 usr/lib/libKubuntu.so.0.*
 usr/lib/libKubuntu.so.0
+usr/lib/kconf_update_bin/libkubuntu-force-setlocale-rewrite
+usr/share/kde4/apps/kconf_update/libkubuntu-force-setlocale-rewrite-14-04.upd
