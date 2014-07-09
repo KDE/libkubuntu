@@ -16,6 +16,8 @@ libkubuntu (14.10ubuntu1) UNRELEASED; urgency=medium
     iff the file already exists. This ensures that broken setups get fixed
     according to the new write rules outlined above.
   * Update test cases accordingly
+  * Build depend on language-pack-en as we need a configured locale en_US for
+    the refined tests to pass
 
  -- Harald Sitter <apachelogger@kubuntu.org>  Wed, 09 Jul 2014 00:50:51 +0200
 
