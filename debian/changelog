@@ -15,6 +15,7 @@ libkubuntu (14.10ubuntu1) UNRELEASED; urgency=medium
     libkubuntu-force-setlocale-rewrite-14-04 to force a rewrite of setlocale
     iff the file already exists. This ensures that broken setups get fixed
     according to the new write rules outlined above.
+  * Update test cases accordingly
 
  -- Harald Sitter <apachelogger@kubuntu.org>  Wed, 09 Jul 2014 00:50:51 +0200
 

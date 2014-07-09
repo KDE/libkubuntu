@@ -14,6 +14,7 @@ private slots:
     void testComplexList();
     void testEnUsComplexityException();
     void testWriteFile();
+    void testWriteFileWithInvalidLocale();
 };
 
 typedef QList<Kubuntu::Language *> LangPtrList;
@@ -98,6 +99,42 @@ void localeTest::testWriteFile()
     list.append(new Kubuntu::Language(QLatin1String("de")));
     list.append(new Kubuntu::Language(QLatin1String("fr")));
     list.append(new Kubuntu::Language(QLatin1String("en_US")));
+    Kubuntu::Locale l(list, QLatin1String("US"));
+    QVERIFY2(l.writeToFile(temp.fileName()), "writing locale to file failed!");
+
+    // Read. Validate LANG, LANGUAGE and first as well as last LC value.
+    QByteArray line;
+    QVERIFY(temp.reset());
+    QVERIFY(!temp.atEnd());
+
+    line = temp.readLine();
+    QCOMPARE(line, QByteArray("export LANGUAGE=en:de:fr:en\n"));
+    QVERIFY(!temp.atEnd());
+
+    line = temp.readLine();
+    QCOMPARE(line, QByteArray("export LANG=en_US.UTF-8@valencia\n"));
+    QVERIFY(!temp.atEnd());
+
+    line = temp.readLine();
+    QCOMPARE(line, QByteArray("export LC_NUMERIC=en_US.UTF-8@valencia\n"));
+    // Must contain time, monetary, paper, identification, name, address, telephone.
+    for (int i = 0; i < 7; ++i) {
+        temp.readLine();
+        QVERIFY(!temp.atEnd());
+    }
+
+    line = temp.readLine();
+    QCOMPARE(line, QByteArray("export LC_MEASUREMENT=en_US.UTF-8@valencia\n"));
+    QVERIFY(temp.atEnd());
+}
+
+void localeTest::testWriteFileWithInvalidLocale()
+{
+    QTemporaryFile temp;
+    QVERIFY2(temp.open(), "opening temporary file failed");
+    LangPtrList list;
+    list.append(new Kubuntu::Language(QLatin1String("en_US")));
+    list.append(new Kubuntu::Language(QLatin1String("fr")));
     Kubuntu::Locale l(list, QLatin1String("BE"));
     QVERIFY2(l.writeToFile(temp.fileName()), "writing locale to file failed!");
 
@@ -107,23 +144,7 @@ void localeTest::testWriteFile()
     QVERIFY(!temp.atEnd());
 
     line = temp.readLine();
-    QCOMPARE(line, QByteArray("export LANG=en_BE.UTF-8@valencia\n"));
-    QVERIFY(!temp.atEnd());
-
-    line = temp.readLine();
-    QCOMPARE(line, QByteArray("export LANGUAGE=en:de:fr:en\n"));
-    QVERIFY(!temp.atEnd());
-
-    line = temp.readLine();
-    QCOMPARE(line, QByteArray("export LC_NUMERIC=en_BE.UTF-8@valencia\n"));
-    // Must contain time, monetary, paper, identification, name, address, telephone.
-    for (int i = 0; i < 7; ++i) {
-        temp.readLine();
-        QVERIFY(!temp.atEnd());
-    }
-
-    line = temp.readLine();
-    QCOMPARE(line, QByteArray("export LC_MEASUREMENT=en_BE.UTF-8@valencia\n"));
+    QCOMPARE(line, QByteArray("export LANGUAGE=en:fr:en\n"));
     QVERIFY(temp.atEnd());
 }
 
