@@ -1,4 +1,4 @@
-libkubuntu (14.10ubuntu1) UNRELEASED; urgency=medium
+libkubuntu (14.10ubuntu1) utopic; urgency=medium
 
   * Fix comment typo
   * Add additional safeguard logic when writing the the locale env vars
@@ -19,7 +19,7 @@ libkubuntu (14.10ubuntu1) UNRELEASED; urgency=medium
   * Build depend on language-pack-en as we need a configured locale en_US for
     the refined tests to pass
 
- -- Harald Sitter <apachelogger@kubuntu.org>  Wed, 09 Jul 2014 00:50:51 +0200
+ -- Harald Sitter <apachelogger@kubuntu.org>  Tue, 15 Jul 2014 01:23:42 +0200
 
 libkubuntu (14.04ubuntu4) trusty; urgency=medium
 
