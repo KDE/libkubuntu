@@ -21,12 +21,12 @@
 #include "l10n_language.h"
 
 #include <KConfigGroup>
-#include <KGlobal>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KProtocolManager>
+#include <KSharedConfig>
 
-#include <LibQApt/Backend>
-#include <LibQApt/Transaction>
+#include <QApt/Backend>
+#include <QApt/Transaction>
 
 #include <QDebug>
 #include <QFile>
@@ -378,4 +378,4 @@ void Language::completeSupport()
 
 } // namespace Kubuntu
 
-#include "l10n_language.moc"
+#include "moc_l10n_language.cpp"

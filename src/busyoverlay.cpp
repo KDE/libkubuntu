@@ -123,5 +123,3 @@ bool BusyOverlay::eventFilter(QObject * object, QEvent * event)
 }
 
 } // namespace Kubuntu
-
-#include "busyoverlay.moc"

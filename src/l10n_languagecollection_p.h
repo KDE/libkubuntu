@@ -21,7 +21,7 @@
 #ifndef L10N_LANGUAGECOLLECTION_P_H
 #define L10N_LANGUAGECOLLECTION_P_H
 
-#include <LibQApt/Backend>
+#include <QApt/Backend>
 
 namespace Kubuntu {
 

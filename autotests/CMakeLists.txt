@@ -1,31 +1,13 @@
-enable_testing()
+include(ECMAddTests)
 
-################################### LANGUAGE ###################################
+find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test)
 
-set(unit_language_SRCS languagetest.cpp)
+ecm_add_test(languagetest.cpp
+    LINK_LIBRARIES
+        Qt5::Test
+        Kubuntu)
 
-kde4_add_unit_test(languagetest
-    TESTNAME languagetest
-    ${unit_language_SRCS}
-)
-
-target_link_libraries(languagetest
-    ${KDE4_KDECORE_LIBS}
-    ${QT_QTTEST_LIBRARY}
-    Kubuntu
-)
-
-#################################### Locale ####################################
-
-set(unit_locale_SRCS localetest.cpp)
-
-kde4_add_unit_test(localetest
-    TESTNAME localetest
-    ${unit_locale_SRCS}
-)
-
-target_link_libraries(localetest
-    ${KDE4_KDECORE_LIBS}
-    ${QT_QTTEST_LIBRARY}
-    Kubuntu
-)
+ecm_add_test(localetest.cpp
+    LINK_LIBRARIES
+        Qt5::Test
+        Kubuntu)

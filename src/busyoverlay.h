@@ -23,7 +23,7 @@
 
 #include "export.h"
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 namespace Kubuntu {
 

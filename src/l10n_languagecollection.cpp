@@ -114,5 +114,3 @@ QSet<Language *> LanguageCollection::languages()
 }
 
 } // namespace Kubuntu
-
-#include "l10n_languagecollection.moc"
