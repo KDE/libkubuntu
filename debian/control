@@ -22,7 +22,7 @@ Description: library for Kubuntu platform integration
 Package: libkubuntu-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libkubuntu0 (= ${binary:Version})
+Depends: ${misc:Depends}, libkubuntu1 (= ${binary:Version})
 Description: library for Kubuntu platform integration - development files
  This library bundles logic required for convenient Kubuntu specific integration
  of Qt and KDE software, such as localization handling and on-demand capability
