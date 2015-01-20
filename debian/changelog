@@ -1,10 +1,10 @@
-libkubuntu (15.04ubuntu1) UNRELEASED; urgency=medium
+libkubuntu (15.04ubuntu1) vivid; urgency=medium
 
   * Port to KDE Frameworks 5
   * SO version is now 1
   * Drop now useless kconf updaters
 
- -- Harald Sitter <sitter@kde.org>  Tue, 20 Jan 2015 13:18:09 +0100
+ -- Harald Sitter <sitter@kde.org>  Tue, 20 Jan 2015 13:45:21 +0100
 
 libkubuntu (14.10ubuntu1) utopic; urgency=medium
 
