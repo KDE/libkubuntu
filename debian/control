@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 9), pkg-kde-tools, cmake, kdelibs5-dev, libqapt-dev
 Standards-Version: 3.9.5
 Vcs-Git: git://anongit.kde.org/scratch/sitter/libkubuntu.git
 
-Package: libkubuntu0
+Package: libkubuntu1
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: library for Kubuntu platform integration
@@ -30,8 +30,7 @@ Description: library for Kubuntu platform integration - development files
 Package: libkubuntu-dbg
 Section: debug
 Architecture: any
-Recommends: libqt4-dbg, libqapt-dbg
-Depends: ${misc:Depends}, libkubuntu0 (= ${binary:Version})
+Depends: ${misc:Depends}, libkubuntu1 (= ${binary:Version})
 Description: library for Kubuntu platform integration - debugging files
  This library bundles logic required for convenient Kubuntu specific integration
  of Qt and KDE software, such as localization handling and on-demand capability
