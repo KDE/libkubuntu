@@ -25,7 +25,7 @@ find_package(KF5 REQUIRED
         I18n
         KIO)
 
-find_package(QApt REQUIRED)
+find_package(QApt 3.0.0 REQUIRED)
 
 ecm_setup_version(1.0.0 VARIABLE_PREFIX KUBUNTU
     SOVERSION 1
