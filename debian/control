@@ -2,18 +2,20 @@ Source: libkubuntu
 Section: libs
 Priority: extra
 Maintainer: Kubuntu Developers <kubuntu-devel@lists.ubuntu.com>
-Build-Depends: debhelper (>= 9), pkg-kde-tools, cmake,
- extra-cmake-modules (>= 1.6.0)
- kio-dev,
- libkf5i18n-dev,
- libqapt-dev (>= 3.0.0),
- language-pack-en
+Build-Depends: cmake,
+               debhelper (>= 9),
+               extra-cmake-modules (>= 1.6.0),
+               kio-dev,
+               language-pack-en,
+               libkf5i18n-dev,
+               libqapt-dev (>= 3.0.0),
+               pkg-kde-tools
 Standards-Version: 3.9.5
 Vcs-Git: git://anongit.kde.org/scratch/sitter/libkubuntu.git
 
 Package: libkubuntu1
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: library for Kubuntu platform integration
  This library bundles logic required for convenient Kubuntu specific integration
  of Qt and KDE software, such as localization handling and on-demand capability
@@ -22,7 +24,7 @@ Description: library for Kubuntu platform integration
 Package: libkubuntu-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libkubuntu1 (= ${binary:Version})
+Depends: libkubuntu1 (= ${binary:Version}), ${misc:Depends}
 Description: library for Kubuntu platform integration - development files
  This library bundles logic required for convenient Kubuntu specific integration
  of Qt and KDE software, such as localization handling and on-demand capability
@@ -33,7 +35,7 @@ Description: library for Kubuntu platform integration - development files
 Package: libkubuntu-dbg
 Section: debug
 Architecture: any
-Depends: ${misc:Depends}, libkubuntu1 (= ${binary:Version})
+Depends: libkubuntu1 (= ${binary:Version}), ${misc:Depends}
 Description: library for Kubuntu platform integration - debugging files
  This library bundles logic required for convenient Kubuntu specific integration
  of Qt and KDE software, such as localization handling and on-demand capability
