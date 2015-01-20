@@ -2,7 +2,7 @@ project(libkubuntu)
 
 cmake_minimum_required(VERSION 2.8.12)
 
-find_package(ECM 0.0.14 REQUIRED NO_MODULE)
+find_package(ECM 1.5.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 include(ECMGenerateHeaders)
@@ -28,8 +28,9 @@ find_package(KF5 REQUIRED
 find_package(QApt REQUIRED)
 
 ecm_setup_version(1.0.0 VARIABLE_PREFIX KUBUNTU
+    SOVERSION 1
     PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KubuntuConfigVersion.cmake"
-    SOVERSION 1)
+        COMPATIBILITY SameMajorVersion)
 
 # --------------------------
 
