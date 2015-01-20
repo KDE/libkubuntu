@@ -15,12 +15,7 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings)
 
-
-
-
 include(CMakePackageConfigHelpers)
-
-
 
 set(REQUIRED_QT_VERSION 5.2.0) # Used in QAptConfig
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
