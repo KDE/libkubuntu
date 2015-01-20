@@ -9,7 +9,9 @@ Build-Depends: cmake,
                language-pack-en,
                libkf5i18n-dev,
                libqapt-dev (>= 3.0.0),
-               pkg-kde-tools
+               pkg-kde-tools,
+               xauth,
+               xvfb
 Standards-Version: 3.9.5
 Vcs-Git: git://anongit.kde.org/scratch/sitter/libkubuntu.git
 
