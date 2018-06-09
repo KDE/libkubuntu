@@ -1,3 +1,9 @@
+libkubuntu (18.04ubuntu1) cosmic; urgency=medium
+
+  * Update Kio build dependency: kio-dev -> libkf5kio-dev
+
+ -- Rik Mills <rikmills@kubuntu.org>  Sat, 09 Jun 2018 21:37:57 +0100
+
 libkubuntu (15.04ubuntu2) vivid; urgency=medium
 
   * Run tests in openbox
